@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Packaging — Selena Giordani</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='85' fill='%238B5CF6'>✦</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --violet: #8B5CF6; --violet-light: #A78BFA;
+    --serif: 'Playfair Display', serif;
+    --serif2: 'Cormorant Garamond', serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: #ffffff; color: #0f0520; font-family: var(--sans); overflow-x: hidden; }
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 60px;
+    background: rgba(255,255,255,0.94); backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(91,33,182,0.10);
+  }
+  .nav-logo { font-family: var(--serif); font-size: 20px; font-weight: 700; color: #1a0a2e; text-decoration: none; letter-spacing: -0.5px; }
+  .nav-logo span { color: var(--violet); }
+  .nav-back { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: #5b21b6; text-decoration: none; transition: color 0.2s, transform 0.2s; }
+  .nav-back:hover { color: #3b0f9e; transform: translateX(-3px); }
+  .page-header { padding: 80px 60px 60px; max-width: 1200px; margin: 0 auto; border-bottom: 1px solid rgba(91,33,182,0.12); margin-bottom: 60px; }
+  .page-service-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #5b21b6; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+  .page-service-label::before { content: ''; display: block; width: 28px; height: 1px; background: #5b21b6; }
+  .page-title { font-family: var(--serif); font-size: clamp(40px, 6vw, 72px); font-weight: 900; letter-spacing: -2px; line-height: 1.0; color: #0f0520; margin-bottom: 20px; }
+  .page-title em { font-style: italic; color: #5b21b6; }
+  .page-desc { font-size: 16px; line-height: 1.8; color: #3a2860; max-width: 560px; }
+  .works-section { padding: 0 60px 100px; max-width: 1200px; margin: 0 auto; }
+  .works-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .work-card { border-radius: 16px; overflow: hidden; border: 1px solid rgba(91,33,182,0.12); background: rgba(248,245,255,0.88); transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s; cursor: pointer; }
+  .work-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(91,33,182,0.14); border-color: rgba(91,33,182,0.28); }
+  .work-card-thumb { aspect-ratio: 4/3; overflow: hidden; background: #f0ebff; display: flex; align-items: center; justify-content: center; }
+  .work-card-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+  .work-card:hover .work-card-thumb img { transform: scale(1.05); }
+  .work-card-body { padding: 20px 22px 22px; }
+  .work-card-title { font-family: var(--serif); font-size: 18px; font-weight: 700; color: #0f0520; margin-bottom: 6px; }
+  .work-card-desc { font-size: 13px; line-height: 1.6; color: #4e3870; }
+  .work-card-year { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #6d5598; margin-top: 10px; display: block; }
+  .works-empty { grid-column: span 3; padding: 80px 40px; text-align: center; border: 2px dashed rgba(91,33,182,0.18); border-radius: 20px; background: rgba(248,245,255,0.5); }
+  .works-empty p { font-size: 15px; color: #6d5598; line-height: 1.7; }
+  .works-empty strong { color: #5b21b6; }
+  .page-cta { padding: 0 60px 80px; max-width: 1200px; margin: 0 auto; border-top: 1px solid rgba(91,33,182,0.10); padding-top: 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+  .page-cta p { font-size: 15px; color: #3a2860; }
+  .btn-contact { display: inline-flex; align-items: center; gap: 10px; background: #5b21b6; color: #fff; padding: 13px 28px; border-radius: 50px; font-family: var(--sans); font-size: 13px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; transition: background 0.2s, transform 0.2s; }
+  .btn-contact:hover { background: #4a1a9e; transform: translateY(-2px); }
+  #lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 8000; align-items: center; justify-content: center; backdrop-filter: blur(6px); cursor: pointer; }
+  #lightbox.open { display: flex; animation: fadeIn 0.2s ease; }
+  #lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; border-radius: 12px; box-shadow: 0 32px 90px rgba(0,0,0,0.8); animation: zoomIn 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+  #lightbox-close { position: fixed; top: 20px; right: 20px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: #fff; width: 40px; height: 40px; border-radius: 50%; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; z-index: 8001; }
+  #lightbox-close:hover { background: rgba(139,92,246,0.3); }
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+  @keyframes zoomIn { from { opacity:0; transform:scale(0.88); } to { opacity:1; transform:scale(1); } }
+  footer { background: #0f0520; padding: 28px 60px; display: flex; align-items: center; justify-content: space-between; }
+  .footer-logo { font-family: var(--serif); font-size: 16px; font-weight: 700; color: rgba(220,210,245,0.75); }
+  .footer-logo span { color: #a78bfa; }
+  .footer-copy { font-size: 12px; color: rgba(200,190,228,0.82); letter-spacing: 1px; }
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .page-header { padding: 60px 24px 40px; }
+    .works-section { padding: 0 24px 70px; }
+    .works-grid { grid-template-columns: repeat(2, 1fr); }
+    .works-empty { grid-column: span 2; }
+    .page-cta { padding: 40px 24px 60px; }
+    footer { padding: 24px; flex-direction: column; gap: 10px; text-align: center; }
+  }
+  @media (max-width: 560px) { .works-grid { grid-template-columns: 1fr; } .works-empty { grid-column: span 1; } }
+</style>
+</head>
+<body>
+<nav>
+  <a href="portfolio-selena.html" class="nav-logo">Selena<span>.</span></a>
+  <a href="portfolio-selena.html#services" class="nav-back">← Volver</a>
+</nav>
+
+<div class="page-header">
+  <p class="page-service-label">Trabajos</p>
+  <h1 class="page-title"><em>Packaging</em></h1>
+  <p class="page-desc">Diseño de packaging pensado para imprimir y funcionar en el mundo real. Desde etiquetas y bolsas hasta sistemas completos de envases.</p>
+</div>
+
+<div class="works-section">
+  <div class="works-grid">
+
+    <!-- ── LUMÉ ── -->
+    <div class="work-card" onclick="openLightbox('lume-bottles.jpg','LUMÉ — Botellas')">
+      <div class="work-card-thumb">
+        <img src="lume-bottles.jpg" alt="LUMÉ — Botellas">
+      </div>
+      <div class="work-card-body">
+        <h2 class="work-card-title">LUMÉ — Botellas</h2>
+        <p class="work-card-desc">Sistema de packaging para marca de skincare premium. Frascos con identidad cohesiva.</p>
+        <span class="work-card-year">2026</span>
+      </div>
+    </div>
+
+    <div class="work-card" onclick="openLightbox('lume-tube.jpg','LUMÉ — Tubo')">
+      <div class="work-card-thumb">
+        <img src="lume-tube.jpg" alt="LUMÉ — Tubo">
+      </div>
+      <div class="work-card-body">
+        <h2 class="work-card-title">LUMÉ — Tubo</h2>
+        <p class="work-card-desc">Tubo de skincare con tipografía serif y paleta de nude aplicada sobre packaging minimalista.</p>
+        <span class="work-card-year">2026</span>
+      </div>
+    </div>
+
+    <div class="work-card" onclick="openLightbox('lume-jar.jpg','LUMÉ — Frasco')">
+      <div class="work-card-thumb">
+        <img src="lume-jar.jpg" alt="LUMÉ — Frasco">
+      </div>
+      <div class="work-card-body">
+        <h2 class="work-card-title">LUMÉ — Frasco</h2>
+        <p class="work-card-desc">Frasco de vidrio con etiqueta de líneas limpias que comunica calidad sin necesitar texto.</p>
+        <span class="work-card-year">2026</span>
+      </div>
+    </div>
+
+    <div class="work-card" onclick="openLightbox('lume-tote.jpg','LUMÉ — Tote Bag')">
+      <div class="work-card-thumb">
+        <img src="lume-tote.jpg" alt="LUMÉ — Tote Bag">
+      </div>
+      <div class="work-card-body">
+        <h2 class="work-card-title">LUMÉ — Tote Bag</h2>
+        <p class="work-card-desc">Tote bag como extensión del sistema de packaging. La identidad viaja más allá del producto.</p>
+        <span class="work-card-year">2026</span>
+      </div>
+    </div>
+
+    <!-- ── BLACK SHEEP ── -->
+    <div class="work-card" onclick="openLightbox('bs-boxes-cards.png','Black Sheep — Cajas y Tarjetas')">
+      <div class="work-card-thumb">
+        <img src="bs-boxes-cards.png" alt="Black Sheep — Cajas y Tarjetas">
+      </div>
+      <div class="work-card-body">
+        <h2 class="work-card-title">Black Sheep — Cajas</h2>
+        <p class="work-card-desc">Cajas y tarjetas para marca de indumentaria. Packaging que refuerza la identidad en el punto de venta.</p>
+        <span class="work-card-year">2025</span>
+      </div>
+    </div>
+
+    <div class="work-card" onclick="openLightbox('bs-mugs-bag.png','Black Sheep — Tazas y Bolsa')">
+      <div class="work-card-thumb">
+        <img src="bs-mugs-bag.png" alt="Black Sheep — Tazas y Bolsa">
+      </div>
+      <div class="work-card-body">
+        <h2 class="work-card-title">Black Sheep — Tazas</h2>
+        <p class="work-card-desc">Tazas y bolsa de marca. Merch que extiende la identidad de Black Sheep fuera de la indumentaria.</p>
+        <span class="work-card-year">2025</span>
+      </div>
+    </div>
+
+    <!-- ── MATCHPOINT ── -->
+    <div class="work-card" onclick="openLightbox('matchpoint-bottle.jpg','Matchpoint — Botella')">
+      <div class="work-card-thumb">
+        <img src="matchpoint-bottle.jpg" alt="Matchpoint — Botella">
+      </div>
+      <div class="work-card-body">
+        <h2 class="work-card-title">Matchpoint — Botella</h2>
+        <p class="work-card-desc">Botella con el sistema cromático institucional. La marca funciona igual en la cancha y en el producto.</p>
+        <span class="work-card-year">2026</span>
+      </div>
+    </div>
+
+    <div class="work-card" onclick="openLightbox('Screenshot 2026-06-01 143731.png','Matchpoint — Bolsa Verde')">
+      <div class="work-card-thumb">
+        <img src="Screenshot 2026-06-01 143731.png" alt="Matchpoint — Bolsa Verde">
+      </div>
+      <div class="work-card-body">
+        <h2 class="work-card-title">Matchpoint — Bolsa</h2>
+        <p class="work-card-desc">Bolsa de compras con tipografía institucional y paleta verde inglés. Packaging premium para el club.</p>
+        <span class="work-card-year">2026</span>
+      </div>
+    </div>
+
+    <div class="work-card" onclick="openLightbox('Screenshot 2026-06-01 143747.png','Matchpoint — Accesorios')">
+      <div class="work-card-thumb">
+        <img src="Screenshot 2026-06-01 143747.png" alt="Matchpoint — Accesorios">
+      </div>
+      <div class="work-card-body">
+        <h2 class="work-card-title">Matchpoint — Accesorios</h2>
+        <p class="work-card-desc">Toalla y bolsa tote con identidad aplicada. El sistema escala a todos los puntos de contacto del club.</p>
+        <span class="work-card-year">2026</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="page-cta">
+  <p>¿Necesitás diseño de packaging para tu marca?</p>
+  <a href="https://wa.me/5491139394037" target="_blank" class="btn-contact">Consultar por WhatsApp ✦</a>
+</div>
+
+<footer>
+  <span class="footer-logo">Selena<span>.</span></span>
+  <span class="footer-copy">© 2026 Selena Giordani · Maschwitz, Buenos Aires</span>
+</footer>
+
+<div id="lightbox" onclick="closeLightbox()">
+  <button id="lightbox-close" onclick="closeLightbox()">×</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+<script>
+function openLightbox(src, alt) { document.getElementById('lightbox-img').src = src; document.getElementById('lightbox-img').alt = alt||''; document.getElementById('lightbox').classList.add('open'); }
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+</script>
+</body>
+</html>
