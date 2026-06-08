@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(dir \"C:\\\\Users\\\\seleg\\\\OneDrive\\\\Desktop\\\\portfolio\\\\\" /B)",
-      "Bash(ls /mnt/c/Users/seleg/OneDrive/Desktop/portfolio/)"
-    ]
-  }
-}
