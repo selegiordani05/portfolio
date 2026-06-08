@@ -162,6 +162,12 @@
   body:has(a:hover) #cursor,
   body:has(button:hover) #cursor { width: 24px; height: 24px; }
 
+  /* Ocultar cursor custom en touch/móvil */
+  @media (hover: none), (pointer: coarse) {
+    #cursor, #cursor-trail { display: none !important; }
+    body, a, button, * { cursor: auto !important; }
+  }
+
   /* STARS CANVAS */
   #stars-canvas {
     position: fixed;
@@ -1769,7 +1775,7 @@
   <p class="hero-subtitle">Diseñadora Gráfica & Multimedial</p>
   <p class="hero-desc">Trabajo en identidad visual, packaging y diseño web para marcas que quieren comunicar con claridad. Disponible para proyectos freelance y posiciones remotas, desde Maschwitz, Buenos Aires.</p>
   <div class="hero-cta">
-    <a href="trabajos-identidad-visual.html" class="btn-primary">Ver trabajos</a>
+    <a href="#services" class="btn-primary">Ver trabajos</a>
     <button onclick="document.getElementById('contact-popup').classList.add('open')" class="btn-hablemos" style="font-family:var(--sans);">✦ Hablemos</button>
   </div>
   <div class="hero-available">
@@ -2257,15 +2263,18 @@ function updateNav() {
 window.addEventListener('scroll', updateNav, { passive: true });
 updateNav();
 
+// Detectar touch/móvil
+const isTouchDevice = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+
 // CURSOR + PARTICLES — listener único passive, canvas sin DOM thrash
 const cursor = document.getElementById('cursor');
 const trail  = document.getElementById('cursor-trail');
 let mx = 0, my = 0, tx = 0, ty = 0;
 
-// Canvas de partículas
+// Canvas de partículas (solo desktop)
 const pCanvas = document.createElement('canvas');
 pCanvas.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9989;';
-document.body.appendChild(pCanvas);
+if (!isTouchDevice) document.body.appendChild(pCanvas);
 const pCtx = pCanvas.getContext('2d');
 function sizePCanvas() { pCanvas.width = window.innerWidth; pCanvas.height = window.innerHeight; }
 sizePCanvas();
@@ -2367,14 +2376,16 @@ function drawStars() {
       s.y = s.hy;
     }
 
-    // 2. Repulsión del cursor
-    const dx   = s.x - mx;
-    const dy   = s.y - my;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    if (dist < REPEL_RADIUS && dist > 0) {
-      const f = (REPEL_RADIUS - dist) / REPEL_RADIUS * REPEL_FORCE;
-      s.vx += (dx / dist) * f;
-      s.vy += (dy / dist) * f;
+    // 2. Repulsión del cursor (solo en desktop)
+    if (!isTouchDevice) {
+      const dx   = s.x - mx;
+      const dy   = s.y - my;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < REPEL_RADIUS && dist > 0) {
+        const f = (REPEL_RADIUS - dist) / REPEL_RADIUS * REPEL_FORCE;
+        s.vx += (dx / dist) * f;
+        s.vy += (dy / dist) * f;
+      }
     }
 
     // 3. Spring hacia el home
